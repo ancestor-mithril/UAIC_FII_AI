@@ -76,7 +76,7 @@ def solve_lee(maze: np.ndarray, xs: int, ys: int, xd: int, yd: int) -> (bool, np
     return False, maze
 
 
-def hill_climbing(maze: np.ndarray, xs: int, ys: int, xd: int, yd: int) -> (bool, np.ndarray):
+def solve_hill_climbing(maze: np.ndarray, xs: int, ys: int, xd: int, yd: int) -> (bool, np.ndarray):
     """
     :param maze:
     :param xs:
@@ -85,4 +85,4 @@ def hill_climbing(maze: np.ndarray, xs: int, ys: int, xd: int, yd: int) -> (bool
     :param yd:
     :return: Boolean and eventual solution
     """
-    return False
+    return False, maze
