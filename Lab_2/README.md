@@ -24,4 +24,6 @@ Etape de rezolvare:
 Detalii suplimentare:
   * strategia Hillclimbing implementata in `solve_hill_climbing` esueaza cu siguranta in cazul oricarui labirint cu bazine de acumulare in minime locale extinse pe toata suprafata de cautare a algoritmului in forma lui actuala
     * labirinturile generate automat in `maze_creator.py` contin foarte multe minime locale care impiedica gasirea unui drum prin hillclimbing
-    * algoritmul va da rezultat doar prin aplicarea lui numai pe anumite tipuri de labirint, precum cel atribuit si comentat in `main.py` 
+    * algoritmul poate da rezultat doar prin aplicarea lui numai pe anumite tipuri de labirint, precum cel atribuit si comentat in `main.py` 
+    
+  * strategia Simulated Annealing implementata in `solve_simulated_annealing` se comporta similar cu strategia Hillclimbing, insa trebuie de asemena rulata de mai multe ori, sau  marit numarul maxim de iteratii pe care il accepta
