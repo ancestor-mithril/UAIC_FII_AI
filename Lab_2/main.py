@@ -11,7 +11,7 @@ print("Starting position: (" + str(xs) + ", " + str(ys) + ")")
 print("Ending position: (" + str(xd) + ", " + str(yd) + ")")
 
 for algorithm in [alg.solve_bkt, alg.solve_lee, alg.solve_hill_climbing]:
-    print("\nTrying " + str(algorithm) + " algorithm...\n")
+    print("\nTrying " + str(algorithm).split()[1] + " algorithm...\n")
     solution_found, final_maze = algorithm(maze, xs, ys, xd, yd)
 
     print("Solution found: " + str(solution_found))
