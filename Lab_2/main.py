@@ -29,7 +29,7 @@ print("Starting position: (" + str(xs) + ", " + str(ys) + ")")
 print("Ending position: (" + str(xd) + ", " + str(yd) + ")")
 
 for algorithm in [alg.solve_bkt, alg.solve_lee, alg.solve_hill_climbing, alg.solve_simulated_annealing]:
-    print("\nTrying " + str(algorithm) + " algorithm...\n")
+    print("\nTrying <<" + str(algorithm).split()[1] + ">> algorithm...\n")
     solution_found, final_maze = algorithm(maze, xs, ys, xd, yd)
 
     print("Solution found: " + str(solution_found))
@@ -37,14 +37,3 @@ for algorithm in [alg.solve_bkt, alg.solve_lee, alg.solve_hill_climbing, alg.sol
         print("Final maze:")
         print(final_maze)
 
-# algorithm = alg.solve_hill_climbing
-# print("\nTrying " + str(algorithm) + " algorithm...\n")
-# for i in range(1000):
-#     solution_found, final_maze = algorithm(maze, xs, ys, xd, yd)
-#     if solution_found:
-#         print("Solution found: " + str(solution_found))
-#         print("Final maze:")
-#         print(final_maze)
-#         break
-# else:
-#     print("Solution found: " + str(False))

@@ -14,8 +14,8 @@ def get_initial_state() -> dict:
     :return: dictionary with each piece coordinates for each player
     """
     return {
-        "C": [[0, 0], [0, 1], [0, 2], [0, 3]],
-        "H": [[3, 0], [3, 1], [3, 2], [3, 3]]
+        "H": [[0, 0], [0, 1], [0, 2], [0, 3]],
+        "C": [[3, 0], [3, 1], [3, 2], [3, 3]]
     }
 
 
@@ -25,10 +25,10 @@ def check_final_state(game_state: dict) -> (bool, str):
     :param game_state: game dictionary containing pieces position
     :return: True, winner if winning condition, False, None otherwise
     """
-    if False not in [False if i[0] != 3 else True for i in game_state["C"]]:
-        return True, "C"
-    if False not in [False if i[0] != 0 else True for i in game_state["H"]]:
+    if False not in [False if i[0] != 3 else True for i in game_state["H"]]:
         return True, "H"
+    if False not in [False if i[0] != 0 else True for i in game_state["C"]]:
+        return True, "C"
     return False, None
 
 
@@ -65,13 +65,13 @@ def generate_possible_states(game_state: dict) -> list:
     return possible_states
 
 
-def evaluate_state(state: dict) -> bool:
+def evaluate_state(state: dict) -> int:
     """
 
     :param state: current state dictionary of positions
     :return: value of state
     """
-    return 12 - sum([x[1] for x in state["C"]]) - sum(x[1] for x in state["H"])
+    return 12 - sum([x[0] for x in state["C"]]) - sum([x[0] for x in state["H"]])
 
 
 def generate_best_state(game_state: dict) -> dict:
@@ -90,6 +90,7 @@ def generate_best_state(game_state: dict) -> dict:
         if state_value > max_value:
             max_value = state_value
             max_index = index
+    print("valoare euristica maxima: ", max_value)
     return state_list[max_index]
 
 
