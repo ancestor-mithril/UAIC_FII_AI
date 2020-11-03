@@ -1,0 +1,15 @@
+T: {V}
+WA: {NT, SA}
+NT: {WA, Q, SA}
+SA: {WA, NT, Q, NSW, V}
+Q: {NT, SA, NSW}
+NSW: {Q, SA, V}
+V: {SA, NSW, T}
+-
+WA: {red}
+NT: {red, blue, green}
+SA: {red, blue, green}
+Q: {green}
+NSW: {red, blue, green}
+V:{red, blue, green}
+T: {red, blue, green}
