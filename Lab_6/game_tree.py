@@ -1,3 +1,4 @@
+import math
 from typing import List
 from functions import evaluate_state
 
@@ -44,4 +45,29 @@ class GameTree(object):
 
         :return: current_value
         """
-        self.value = evaluate_state(self.game_state)
+        if len(self.children) == 0:
+            self.value = evaluate_state(self.game_state)
+        else:
+            if self.player == "C":
+                self.value = min([x.evaluate_current_state() for x in self.children])
+            else:
+                self.value = max([x.evaluate_current_state() for x in self.children])
+
+        return self.value
+
+    def alpha_beta_pruning(self, alpha: float, beta: float) -> float:
+        """
+
+        :param alpha:
+        :param beta:
+        :return:
+        """
+        self.value = math.inf if self.player == "C" else - math.inf
+        if len(self.children) == 0:
+            self.value = evaluate_state(self.game_state)
+            if self.player == "C":
+                if self.parent.value > self.value:
+                    self.parent.value = self.value
+            else:
+                if self.parent.value < self.value:
+                    self.parent.value = self.value

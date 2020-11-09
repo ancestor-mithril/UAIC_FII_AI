@@ -1,5 +1,7 @@
 import functions as f
 import sys
+from improved_ai import mini_max
+
 
 game_state = f.get_initial_state()
 print(f.to_string(game_state))
@@ -28,6 +30,6 @@ while True:
     game_state = f.apply_player_move(game_state, old_coordinates, new_coordinates)
     print("mutarea omului")
     print(f.to_string(game_state))
-    game_state = f.generate_best_state(game_state)
+    game_state = mini_max(game_state)
     print("mutarea calculatorului")
     print(f.to_string(game_state))

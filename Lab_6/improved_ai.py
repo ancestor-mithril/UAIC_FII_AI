@@ -1,6 +1,7 @@
 from functions import generate_possible_states
 from game_tree import GameTree
 import json
+import math
 
 
 def mini_max(game_state: dict, level: int = 2) -> dict:
@@ -11,7 +12,13 @@ def mini_max(game_state: dict, level: int = 2) -> dict:
     :return:
     """
     current_state = generate_game_tree(game_state, level, "C")
-    print("a")
+    max_value = - math.inf
+    max_index = 0
+    for i in range(len(current_state.children)):
+        if current_state.children[i].evaluate_current_state() > max_value:
+            max_value = current_state.value
+            max_index = i
+    return current_state.children[max_index].game_state
 
 
 def generate_game_tree(game_state: dict, level: int, player: str, parent: GameTree = None) -> GameTree:
