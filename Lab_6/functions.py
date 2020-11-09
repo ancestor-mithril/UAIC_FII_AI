@@ -40,46 +40,27 @@ def is_valid(game_state: dict, transition: list) -> bool:
     :return: True if transition is possible, false otherwise
     """
     if 0 <= transition[0] <= 3 and 0 <= transition[1] <= 3:
-        # if transition not in game_state["C"] and transition not in game_state["H"]:
-        #     print(transition, game_state["C"], game_state["H"]) # debug
         return transition not in game_state["C"] and transition not in game_state["H"]
     return False
 
 
-def generate_player_possible_states(game_state: dict) -> list:
+def generate_possible_states(game_state: dict, current_player: str) -> list:
     """
 
+    :param current_player: may be "C" or "H"
     :param game_state: dictionary of current position
-    :return: all possible player future positions
+    :return: all possible future positions for calculator
     """
+    assert current_player == "C" or current_player == "H"
     possible_states = []
     dx = [-1, -1, -1, 0, 1, 1, 1, 0]
     dy = [-1, 0, 1, 1, 1, 0, -1, -1]
-    for index, p in enumerate(game_state["H"]):
+    for index, p in enumerate(game_state[current_player]):
         for i, j in zip(dx, dy):
             transition = [p[0] + i, p[1] + j]
             if is_valid(game_state, transition):
                 possible_state = json.loads(json.dumps(game_state))
-                possible_state["H"][index] = transition
-                possible_states.append(possible_state)
-    return possible_states
-
-
-def generate_possible_states(game_state: dict) -> list:
-    """
-
-    :param game_state: dictionary of current position
-    :return: all possible future positions
-    """
-    possible_states = []
-    dx = [-1, -1, -1, 0, 1, 1, 1, 0]
-    dy = [-1, 0, 1, 1, 1, 0, -1, -1]
-    for index, p in enumerate(game_state["C"]):
-        for i, j in zip(dx, dy):
-            transition = [p[0] + i, p[1] + j]
-            if is_valid(game_state, transition):
-                possible_state = json.loads(json.dumps(game_state))
-                possible_state["C"][index] = transition
+                possible_state[current_player][index] = transition
                 possible_states.append(possible_state)
     return possible_states
 
@@ -102,25 +83,6 @@ def evaluate_player_state(state: dict) -> int:
     return 12 - sum([3 - x[0] for x in state["C"]]) - sum([3 - x[0] for x in state["H"]])
 
 
-def generate_player_best_state(game_state: dict) -> dict:
-    """
-    evaluates all possible future states for player
-
-    :param game_state: current state dictionary of positions
-    :return: best state that can be chosen by player with evaluate_player_state() heuristic
-    """
-    max_value = 0
-    max_index = 0
-    state_list = generate_player_possible_states(game_state)
-    for index, state in enumerate(state_list):
-        state_value = evaluate_player_state(state)
-        if state_value > max_value:
-            max_value = state_value
-            max_index = index
-    # print("valoare euristica maxima pentru player: ", max_value)
-    return state_list[max_index]
-
-
 def generate_best_state(game_state: dict) -> dict:
     """
     evaluates all possible future states
@@ -130,7 +92,7 @@ def generate_best_state(game_state: dict) -> dict:
     """
     max_value = 0
     max_index = 0
-    state_list = generate_possible_states(game_state)
+    state_list = generate_possible_states(game_state, "C")
     for index, state in enumerate(state_list):
         # state = generate_player_best_state(state)
         state_value = evaluate_state(state)
