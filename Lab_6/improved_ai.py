@@ -41,3 +41,14 @@ def generate_game_tree(game_state: dict, level: int, player: str, parent: GameTr
     return current_state
 
 
+def alphabeta(root, level):
+    current_state = generate_game_tree(root, level, "C")
+    max_value = - math.inf
+    max_index = 0
+    current_state.alpha_beta_pruning(1)
+
+    for i in range(len(current_state.children)):
+        if current_state.children[i].value > max_value:
+            max_value = current_state.value
+            max_index = i
+    return current_state.children[max_index].game_state

@@ -3,7 +3,6 @@ import json
 import numpy as np
 import sys
 
-
 def print_error(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 

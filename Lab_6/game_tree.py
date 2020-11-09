@@ -2,6 +2,8 @@ import math
 from typing import List
 from functions import evaluate_state
 
+ab_values = [math.inf if i % 2 == 1 else -math.inf for i in range(0, 5)]
+
 
 class GameTree(object):
     def __init__(self, game_state: dict, player: str, parent: "GameTree" = None, children: List["GameTree"] = None):
@@ -55,19 +57,47 @@ class GameTree(object):
 
         return self.value
 
-    def alpha_beta_pruning(self, alpha: float, beta: float) -> float:
+    def alpha_beta_pruning(self, level) -> float:
         """
 
-        :param alpha:
-        :param beta:
+        :param level:
         :return:
         """
-        self.value = math.inf if self.player == "C" else - math.inf
-        if len(self.children) == 0:
-            self.value = evaluate_state(self.game_state)
-            if self.player == "C":
-                if self.parent.value > self.value:
+
+        if self.children:
+            for child in self.children:
+                child.alpha_beta_pruning(level + 1)
+                if level % 2 == 1:
+                    if ab_values[level] < self.value:
+                        break
+                elif ab_values[level] > self.value:
+                    break
+
+            if level % 2 == 1:
+                if ab_values[level] > self.value:
+                    ab_values[level] = self.value
+                    if self.parent is not None:
+                        self.parent.value = self.value
+            elif ab_values[level] < self.value:
+                ab_values[level] = self.value
+                if self.parent is not None:
                     self.parent.value = self.value
-            else:
-                if self.parent.value < self.value:
-                    self.parent.value = self.value
+        else:
+            value = self.evaluate_current_state()
+            if level % 2 == 1:
+                if value > ab_values[level]:
+                    self.parent.value = value
+                    ab_values[level] = value
+            elif value < ab_values[level]:
+                self.parent.value = value
+                ab_values[level] = value
+
+        # self.value = math.inf if self.player == "C" else - math.inf
+        # if len(self.children) == 0:
+        #     self.value = evaluate_state(self.game_state)
+        #     if self.player == "C":
+        #         if self.parent.value > self.value:
+        #             self.parent.value = self.value
+        #     else:
+        #         if self.parent.value < self.value:
+        #             self.parent.value = self.value

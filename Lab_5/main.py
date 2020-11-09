@@ -1,5 +1,4 @@
 import functions as f
-import sys
 
 game_state = f.get_initial_state()
 print(f.to_string(game_state))
