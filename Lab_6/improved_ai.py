@@ -4,7 +4,7 @@ import json
 import math
 
 
-def mini_max(game_state: dict, level: int = 2) -> dict:
+def mini_max(game_state: dict, level: int = 4) -> dict:
     """
 
     :param game_state:
@@ -41,8 +41,14 @@ def generate_game_tree(game_state: dict, level: int, player: str, parent: GameTr
     return current_state
 
 
-def alphabeta(root, level):
-    current_state = generate_game_tree(root, level, "C")
+def alpha_beta(game_state: dict, level: int = 4):
+    """
+
+    :param game_state:
+    :param level:
+    :return:
+    """
+    current_state = generate_game_tree(game_state, level, "C")
     max_value = - math.inf
     max_index = 0
     current_state.alpha_beta_pruning(1)

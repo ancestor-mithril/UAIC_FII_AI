@@ -57,7 +57,7 @@ class GameTree(object):
 
         return self.value
 
-    def alpha_beta_pruning(self, level) -> float:
+    def alpha_beta_pruning(self, level: int) -> float:
         """
 
         :param level:
@@ -91,13 +91,3 @@ class GameTree(object):
             elif value < ab_values[level]:
                 self.parent.value = value
                 ab_values[level] = value
-
-        # self.value = math.inf if self.player == "C" else - math.inf
-        # if len(self.children) == 0:
-        #     self.value = evaluate_state(self.game_state)
-        #     if self.player == "C":
-        #         if self.parent.value > self.value:
-        #             self.parent.value = self.value
-        #     else:
-        #         if self.parent.value < self.value:
-        #             self.parent.value = self.value
