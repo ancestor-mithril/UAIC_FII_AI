@@ -103,15 +103,6 @@ class Network:
             xs.append(x)
         return zs, xs
 
-    def accuracy(self, eval_data):
-        data = eval_data[0]
-        labels = eval_data[1]
-
-        results = [(np.argmax(self.feedForward(x, testing=True)[1][-1]), y)
-                   for (x, y) in zip(data, labels)]
-        result_accuracy = sum(int(x == y) for (x, y) in results)
-        return result_accuracy
-
 
 def sigmoid(z):
     """The sigmoid function."""
