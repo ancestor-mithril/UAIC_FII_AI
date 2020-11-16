@@ -28,6 +28,6 @@ while True:
     game_state = f.apply_player_move(game_state, old_coordinates, new_coordinates)
     print("mutarea omului")
     print(f.to_string(game_state))
-    game_state = mini_max(game_state, 4)
+    game_state = alpha_beta(game_state, 4)
     print("mutarea calculatorului")
     print(f.to_string(game_state))
