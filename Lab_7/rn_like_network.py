@@ -44,7 +44,8 @@ class Network:
         for i in range(10000):
             inp = [np.random.randint(0, 2), np.random.randint(0, 2)]
             out = func[inp[0] * 2 + inp[1]]
-            net_out = np.where(self.feedForward(inp)[1][-1][1] >= 0.5, 1, 0)[0]
+
+            net_out = np.where(self.feedForward(inp)[1][-1] >= 0.5, 1, 0)[0]
 
             if out == net_out:
                 correct += 1
@@ -76,7 +77,7 @@ class Network:
 
         z_values, activations = self.feedForward(x)
 
-        y = np.array([[1] if y == i else [0] for i in range(2)])
+
 
         delta = (activations[-1] - y) * sigmoid_prime(activations[-1])
         nabla_b[-1] = delta
