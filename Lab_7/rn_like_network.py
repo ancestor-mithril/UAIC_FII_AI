@@ -15,6 +15,8 @@ class Network:
         self.weights = [np.random.normal(size=(layers[i + 1], layers[i])) for i in
                         range(self.num_layers - 1)]
 
+        print(self.weights)
+
     def save(self, filename):
 
         if os.path.exists(filename):
@@ -41,16 +43,17 @@ class Network:
     def load_and_run(self, filename, func):
         self.load(filename)
         correct = 0
-        for i in range(10000):
-            inp = [np.random.randint(0, 2), np.random.randint(0, 2)]
-            out = func[inp[0] * 2 + inp[1]]
+        for i in range(2):
+            for j in range(2):
+                out = func[i * 2 + j]
 
-            net_out = np.where(self.feedForward(inp)[1][-1] >= 0.5, 1, 0)[0]
+                # net_out = 1 if self.feedForward([i,j])[1][-1] >= 0.5 else 0
+                net_out = np.where(self.feedForward([i, j])[1][-1] >= 0.5, 1, 0)[0]
 
-            if out == net_out:
-                correct += 1
+                if out == net_out:
+                    correct += 1
 
-        print("Total accuracy:{}/10000".format(correct))
+        print("Total accuracy:{}/4".format(correct))
 
     def train(self, max_epochs, func):
 
@@ -58,16 +61,10 @@ class Network:
             inp = [np.random.randint(0, 2), np.random.randint(0, 2)]
             out = func[inp[0] * 2 + inp[1]]
 
-            nabla_b = [np.zeros(b.shape) for b in self.biases]
-            nabla_w = [np.zeros(w.shape) for w in self.weights]
-
             delta_nabla_b, delta_nabla_w = self.backprop(inp, out)
 
-            nabla_b = [nabla_b[i] + delta_nabla_b[i] for i in range(len(nabla_b))]
-            nabla_w = [nabla_w[i] + delta_nabla_w[i] for i in range(len(nabla_w))]
-
-            self.weights = [self.weights[i] - (nabla_w[i] * self.learning_rate) for i in range(len(self.weights))]
-            self.biases = [self.biases[i] - (nabla_b[i] * self.learning_rate) for i in range(len(self.biases))]
+            self.weights = [self.weights[i] - (delta_nabla_w[i] * self.learning_rate) for i in range(len(self.weights))]
+            self.biases = [self.biases[i] - (delta_nabla_b[i] * self.learning_rate) for i in range(len(self.biases))]
 
         self.save('network.pickle')
 
@@ -77,9 +74,7 @@ class Network:
 
         z_values, activations = self.feedForward(x)
 
-
-
-        delta = (activations[-1] - y) * sigmoid_prime(activations[-1])
+        delta = (activations[-1] - y) * sigmoid_prime(activations[-1])  # ek * f'
         nabla_b[-1] = delta
         nabla_w[-1] = np.dot(delta, activations[-2].transpose())
 
