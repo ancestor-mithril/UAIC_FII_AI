@@ -1,6 +1,6 @@
-from Network2 import Network
+from rn_like_network import Network
 
-net = Network(learning_rate=0.1)
+net = Network([2, 2, 1], learning_rate=3)
 
 func = [0, 1, 1, 0]
 
