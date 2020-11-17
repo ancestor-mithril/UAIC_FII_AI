@@ -19,6 +19,20 @@ class Network:
         # print("HB:", self.hidden_biases)
         # print("OB:", self.output_biases)
 
+    def load_and_run(self, filename, func):
+        correct = 0
+        for i in range(2):
+            for j in range(2):
+                out = func[i * 2 + j]
+
+                # net_out = 1 if self.feedForward([i,j])[1][-1] >= 0.5 else 0
+                net_out = np.where(self.feedForward([i, j])[1][-1] >= 0.5, 1, 0)[0]
+
+                if out == net_out:
+                    correct += 1
+
+        print("Total accuracy:{}/4".format(correct))
+
     def train(self, max_epochs, func):
         for j in range(max_epochs):
             inp = [np.random.randint(2), np.random.randint(2)]
@@ -54,7 +68,7 @@ class Network:
 
     def backprop(self, ys, out, net_out):
         # print("YS:", ys)
-        delta = sigmoid_prime(net_out) * (out - net_out)
+        delta = (out - net_out)
 
         delta_output_weights = (self.learning_rate * delta[0]) * ys[-1]
 
@@ -67,6 +81,7 @@ class Network:
         # print("DHW:", delta_hidden_weights)
 
         return delta_output_weights, delta_hidden_weights
+
 
 def sigmoid(z):
     """The sigmoid function."""
