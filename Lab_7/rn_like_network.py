@@ -56,20 +56,25 @@ class Network:
     def train(self, max_epochs, func):
 
         for j in range(max_epochs):
-            inp = [np.random.randint(0, 2), np.random.randint(0, 2)]
-            out = func[inp[0] * 2 + inp[1]]
+            mse = 0
+            for tt in range(4):
+                inp = [tt // 2, tt % 2]
+                out = func[tt]
 
-            nabla_b = [np.zeros(b.shape) for b in self.biases]
-            nabla_w = [np.zeros(w.shape) for w in self.weights]
+                nabla_b = [np.zeros(b.shape) for b in self.biases]
+                nabla_w = [np.zeros(w.shape) for w in self.weights]
 
-            delta_nabla_b, delta_nabla_w = self.backprop(inp, out)
+                delta_nabla_b, delta_nabla_w, ad = self.backprop(inp, out)
 
-            nabla_b = [nabla_b[i] + delta_nabla_b[i] for i in range(len(nabla_b))]
-            nabla_w = [nabla_w[i] + delta_nabla_w[i] for i in range(len(nabla_w))]
+                mse += ad
+                nabla_b = [nabla_b[i] + delta_nabla_b[i] for i in range(len(nabla_b))]
+                nabla_w = [nabla_w[i] + delta_nabla_w[i] for i in range(len(nabla_w))]
 
-            self.weights = [self.weights[i] - (nabla_w[i] * self.learning_rate) for i in range(len(self.weights))]
-            self.biases = [self.biases[i] - (nabla_b[i] * self.learning_rate) for i in range(len(self.biases))]
+                self.weights = [self.weights[i] - (nabla_w[i] * self.learning_rate) for i in range(len(self.weights))]
+                self.biases = [self.biases[i] - (nabla_b[i] * self.learning_rate) for i in range(len(self.biases))]
 
+            if mse / (1 * 4) < 1.1e-5:
+                break
         self.save('network.pickle')
 
     def backprop(self, x, y):
@@ -77,6 +82,8 @@ class Network:
         nabla_w = [np.zeros(w.shape) for w in self.weights]
 
         z_values, activations = self.feedForward(x)
+
+        mse = (activations[-1] - y)**2
 
         delta = (activations[-1] - y) * sigmoid_prime(activations[-1])
         nabla_b[-1] = delta
@@ -88,7 +95,7 @@ class Network:
             nabla_b[-l] = delta
             nabla_w[-l] = np.dot(delta, activations[-l - 1].transpose())
 
-        return nabla_b, nabla_w
+        return nabla_b, nabla_w, mse
 
     def feedForward(self, x):
 
